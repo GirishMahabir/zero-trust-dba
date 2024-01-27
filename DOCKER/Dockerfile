@@ -39,10 +39,10 @@ RUN echo "root:$(openssl rand -base64 32)" | chpasswd && \
 RUN ssh-keygen -A
 
 # Copy SSH Server Config
-COPY templates/sshd_config /etc/ssh/sshd_config
+COPY ./templates/sshd_config /etc/ssh/sshd_config
 
 # COPY SSH Service Script
-COPY templates/ssh-service.sh /ssh-service.sh
+COPY ./templates/ssh-service.sh /ssh-service.sh
 
 # Set SSH Service Script Permissions
 RUN chmod +x /ssh-service.sh
@@ -51,4 +51,4 @@ RUN chmod +x /ssh-service.sh
 RUN echo "* * * * * root /ssh-service.sh" >> /etc/crontab
 
 # Copy Sudores File
-COPY templates/sudoers.conf /etc/sudoers
+COPY ./templates/sudoers.conf /etc/sudoers
