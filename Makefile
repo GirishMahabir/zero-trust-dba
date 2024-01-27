@@ -1,9 +1,10 @@
 # Makefile for zero-trust-dba project
 
 # Variables
+DOCKER_DIR=DOCKER
 DOCKER_COMPOSE_FILE=DOCKER/docker-compose.yml
 DOCKERFILE=DOCKER/Dockerfile
-DATA_DIR=DATA/mariadb/data
+DATA_DIR=DATA/
 CONF_DIR=CONF
 SAMPLE_DATA_DIR=DATA/sample_data
 SCRIPTS_DIR=SCRIPTS
@@ -12,23 +13,24 @@ SCRIPTS_DIR=SCRIPTS
 .PHONY: start stop clean build
 
 start:
-	@bash run.sh start
+	cd $(DOCKER_DIR) && docker build . -t mariadb:11.2-custom && docker-compose up -d
 
 stop:
-	@bash run.sh stop
+	cd $(DOCKER_DIR) && docker-compose stop && docker-compose down -v --remove-orphans
 
 clean:
-	@bash run.sh clean
+	cd $(DOCKER_DIR) && docker-compose down --remove-orphans -v
+	rm -rf $(DATA_DIR)/*
 
 build:
-	docker -f $(DOCKERFILE) build -t mariadb:11.2-custom
+	cd $(DOCKER_DIR) && docker build . -t mariadb:11.2-custom
 
 # Data management
 .PHONY: clean-data load-sample-data
 
 clean-data:
 	@echo "Cleaning data directory..."
-	@rm -rf $(DATA_DIR)/*
+	rm -rf $(DATA_DIR)/*
 
 load-sample-data:
 	@echo "Loading sample data..."
@@ -39,7 +41,7 @@ load-sample-data:
 
 list-config:
 	@echo "Listing configuration files..."
-	@ls $(CONF_DIR)
+	ls $(CONF_DIR)
 
 backup-config:
 	@echo "Backing up configuration files..."
