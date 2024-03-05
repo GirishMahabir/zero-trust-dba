@@ -25,3 +25,28 @@ Zero-Trust Database Administration with the aim to protect the administrator as 
 
 
 # Audit Log on Every Machine -> Filebeat -> ElasticSearch
+
+
+
+
+
+# TODO:
+- [ ] Finilize Query Rules for annomized data.
+- [ ] Ensure Logs are being stored in a proper format.
+- [ ] Ensure Logs are being sent to ElasticSearch and can be viewed in Kibana.
+- [ ] System Admin Sudo (Limits)
+
+
+
+# Access
+source DOCKER/.env
+
+## ProxySQL Admin
+mysql -h127.0.0.1 -P6032 -uradmin -pgo0Daeghai5Xai9te1faenaoPiedohsh --prompt='PSSQL Admin> '
+
+## MySQL Admin
+mysql -h127.0.0.1 -P3306 -uroot -p$MARIADB_ROOT_PASSWORD --prompt='MySQL Master> '
+mysql -h127.0.0.1 -P3307 -uroot -p$MARIADB_ROOT_PASSWORD --prompt='MySQL Slave> '
+
+## MySQL data_ops User
+mysql -h127.0.0.1 -P6033 -udata_ops -paer6eethe7aiShe6uoqu4ieTeef6aig3 --prompt='PSSQL data_ops> '

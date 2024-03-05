@@ -21,3 +21,6 @@ cd ../../
 
 # Prepare ProxySQL.
 docker exec --env-file DOCKER/.env zero-trust-dba-project-proxysql-1  /bin/bash -c 'mysql -u admin -p$ProxySQL_ADMIN_PASSWORD -h 127.0.0.1 -P6032 </tmp/prepareProxySQL.sql'
+
+# Re-Load ProxySQL.
+docker exec --env-file DOCKER/.env zero-trust-dba-project-proxysql-1  /bin/bash -c 'mysql -u admin -p$ProxySQL_ADMIN_PASSWORD -h127.0.0.1 -P6032 -e "LOAD MYSQL SERVERS TO RUNTIME; LOAD MYSQL USERS TO RUNTIME; LOAD MYSQL QUERY RULES TO RUNTIME; LOAD MYSQL VARIABLES TO RUNTIME; SAVE MYSQL VARIABLES TO DISK;"'
