@@ -171,6 +171,15 @@ services:
       - LOGSTASH_HOSTS=http://logstash01:9600
     command:
       -strict.perms=true
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "filebeat test config -c /usr/share/filebeat/filebeat.yml",
+        "filebeat test output -c /usr/share/filebeat/filebeat.yml"
+      ]
+      interval: 10s
+      timeout: 5s
+      retries: 120
 
   logstash01:
     depends_on:
@@ -256,4 +265,4 @@ services:
       - ../SCRIPTS/prepareProxySQL.sql:/tmp/prepareProxySQL.sql 
     ports:
       - '6032:6032'
-      - '6033:6033'    
+      - '6033:6033'

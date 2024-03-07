@@ -1,21 +1,24 @@
 filebeat.inputs:
-  - type: filestream
-    id: default-filestream
+  - type: log
     paths:
-      - ingest_data/*.log
-
-filebeat.autodiscover:
-  providers:
-    - type: docker
-      hints.enabled: true
-
-processors:
-  - add_docker_metadata: ~
+      - ingest_data/proxysql-data/*.log*
+    json:
+      keys_under_root: true
+      add_error_key: true
 
 setup.kibana:
   host: ${KIBANA_HOSTS}
   username: ${ELASTIC_USER}
   password: ${ELASTIC_PASSWORD}
+
+setup.template:
+  name: "proxysql-logs"
+  pattern: "proxysql-logs-*"
+  settings:
+    index.number_of_shards: 1
+    index.number_of_replicas: 0
+
+setup.ilm.enabled: false
 
 output.elasticsearch:
   hosts: ${ELASTIC_HOSTS}
@@ -23,3 +26,7 @@ output.elasticsearch:
   password: ${ELASTIC_PASSWORD}
   ssl.enabled: true
   ssl.certificate_authorities: "/usr/share/filebeat/certs/ca/ca.crt"
+  index: "proxysql-logs-%{+yyyy.MM.dd}"
+
+monitoring.enabled: false
+logging.level: debug

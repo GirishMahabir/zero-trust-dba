@@ -1,0 +1,70 @@
+{
+    "template": {
+        "settings": {
+            "index": {
+                "number_of_shards": "1",
+                "number_of_replicas": "0",
+                "refresh_interval": "5s"
+            }
+        },
+        "mappings": {
+            "_meta": {
+                "description": "Custom Filebeat template for ProxySQL Query logs"
+            },
+            "properties": {
+                "client": {
+                    "type": "text"
+                },
+                "digest": {
+                    "type": "text"
+                },
+                "duration_us": {
+                    "type": "long"
+                },
+                "endtime": {
+                    "type": "date",
+                    "format": "yyyy-MM-dd HH:mm:ss.SSSSSS"
+                },
+                "endtime_timestamp_us": {
+                    "type": "long"
+                },
+                "event": {
+                    "type": "text"
+                },
+                "hostgroup_id": {
+                    "type": "integer"
+                },
+                "query": {
+                    "type": "text"
+                },
+                "rows_sent": {
+                    "type": "integer"
+                },
+                "schemaname": {
+                    "type": "text"
+                },
+                "starttime": {
+                    "type": "date",
+                    "format": "yyyy-MM-dd HH:mm:ss.SSSSSS"
+                },
+                "starttime_timestamp_us": {
+                    "type": "long"
+                },
+                "thread_id": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "text"
+                },
+                "server": {
+                    "type": "text"
+                }
+            }
+        }
+    },
+    "index_patterns": [
+        "proxysql-log-*"
+    ],
+    "data_stream": {},
+    "priority": 200
+}

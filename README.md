@@ -28,6 +28,12 @@ Zero-Trust Database Administration with the aim to protect the administrator as 
 
 
 
+# ProxySQL JSON Log
+```sql
+SET mysql-eventslog_format=2;
+LOAD MYSQL VARIABLES TO RUNTIME;
+SAVE MYSQL VARIABLES TO DISK;
+```
 
 
 # TODO:
