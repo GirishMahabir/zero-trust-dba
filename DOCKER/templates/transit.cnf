@@ -1,0 +1,5 @@
+# File to enable SSL on MariaDB Server
+[mysqld]
+ssl-ca=/etc/mysql/transit/ca.pem
+ssl-cert=/etc/mysql/transit/server-cert.pem
+ssl-key=/etc/mysql/transit/server-key.pem

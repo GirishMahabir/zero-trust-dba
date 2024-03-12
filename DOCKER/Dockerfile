@@ -24,6 +24,19 @@ RUN apt install -y \
     ssh \
     net-tools
 
+# Configure Container for Data at Rest Encryption
+COPY ./scripts/Data-At-Rest-Encryption.sh /tmp/Data-At-Rest-Encryption.sh
+COPY ./scripts/Data-In-Transit-Encryption.sh /tmp/Data-In-Transit-Encryption.sh
+
+# Set Permissions for Data-At-Rest-Encryption.sh
+RUN chmod +x /tmp/Data-At-Rest-Encryption.sh /tmp/Data-In-Transit-Encryption.sh
+
+RUN bash /tmp/Data-At-Rest-Encryption.sh
+RUN bash /tmp/Data-In-Transit-Encryption.sh
+
+# Create Encryption CNF File
+COPY ./templates/encryption.cnf /etc/mysql/encryption.cnf
+
 # Create User & Group (dba & sysadmin)
 RUN groupadd -g 1000 dba && \
     groupadd -g 1001 sysadmin && \

@@ -1,7 +1,6 @@
 # zero-trust-dba
 Zero-Trust Database Administration with the aim to protect the administrator as well as the data.
 
-
 # Manual commands - to be automated
 - sudo mkdir -p DATA/mariadb
 - sudo chown -R 1001:1001 DATA/mariadb/
@@ -37,9 +36,11 @@ SAVE MYSQL VARIABLES TO DISK;
 
 
 # TODO:
-- [ ] Finilize Query Rules for annomized data.
-- [ ] Ensure Logs are being stored in a proper format.
-- [ ] Ensure Logs are being sent to ElasticSearch and can be viewed in Kibana.
+- [x] Finilize Query Rules for annomized data.
+- [x] Ensure Logs are being stored in a proper format.
+- [x] Ensure Logs are being sent to ElasticSearch and can be viewed in Kibana.
+- [ ] Configure Data at Rest Encryption.
+- [ ] Configure Data in Transit Encryption.
 - [ ] System Admin Sudo (Limits)
 
 
@@ -56,3 +57,10 @@ mysql -h127.0.0.1 -P3307 -uroot -p$MARIADB_ROOT_PASSWORD --prompt='MySQL Slave> 
 
 ## MySQL data_ops User
 mysql -h127.0.0.1 -P6033 -udata_ops -paer6eethe7aiShe6uoqu4ieTeef6aig3 --prompt='PSSQL data_ops> '
+
+
+
+
+# Resources
+- https://severalnines.com/blog/full-mariadb-encryption-rest-and-transit-maximum-data-protection-part-one/
+- https://severalnines.com/blog/full-mariadb-encryption-rest-and-transit-maximum-data-protection-part-two/

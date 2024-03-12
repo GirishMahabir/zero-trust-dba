@@ -211,6 +211,8 @@ services:
       - '3306:3306'
     volumes:
       - '../DATA/mariadb-master:/bitnami/mariadb'
+      - './templates/transit.cnf:/etc/mysql/conf.d/transit.cnf:ro'
+      - './templates/encryption.cnf:/etc/mysql/conf.d/encryption.cnf:ro'
     environment:
       - MARIADB_SKIP_TEST_DB=yes
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
