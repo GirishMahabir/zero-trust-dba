@@ -205,14 +205,12 @@ services:
       - strict.perms=false
 
   mariadb-master:
-    #image: docker.io/bitnami/mariadb:11.2
     image: mariadb:11.2-custom
     ports:
       - '3306:3306'
     volumes:
-      - '../DATA/mariadb-master:/bitnami/mariadb'
-      - './templates/transit.cnf:/etc/mysql/conf.d/transit.cnf:ro'
-      - './templates/encryption.cnf:/etc/mysql/conf.d/encryption.cnf:ro'
+      - '../DATA/mariadb-master/data:/bitnami/mariadb'
+      - '../DATA/mariadb-master/logs:/opt/bitnami/mariadb/logs'
     environment:
       - MARIADB_SKIP_TEST_DB=yes
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
@@ -235,7 +233,8 @@ services:
       mariadb-master:
           condition: service_healthy
     volumes:
-      - '../DATA/mariadb-slave:/bitnami/mariadb'
+      - '../DATA/mariadb-slave/data:/bitnami/mariadb'
+      - '../DATA/mariadb-slave/logs:/opt/bitnami/mariadb/logs'
     ports:
       - '3307:3306'
     environment:
