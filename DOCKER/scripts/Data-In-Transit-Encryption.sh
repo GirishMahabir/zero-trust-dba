@@ -33,6 +33,11 @@ else
     exit 1
 fi
 
+# Get ID of the mysql user
+MYSQL_USER_ID=$(id -u mysql)
+
 # Set Certificate Permissions
-chown -R mysql:mysql "$MARIADB_CERTS_DIR"
+chown -R "$MYSQL_USER_ID":"$MYSQL_USER_ID" "$MARIADB_CERTS_DIR"
+
+# Set Permissions (Docker/Container Specific Issue May Arise -> Make sure the user is created before setting permissions).
 chmod 600 "$MARIADB_CERTS_DIR/ca-key.pem" "$MARIADB_CERTS_DIR/server-key.pem" "$MARIADB_CERTS_DIR/client-key.pem"
