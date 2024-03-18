@@ -39,8 +39,36 @@ SAVE MYSQL VARIABLES TO DISK;
 - [x] Finilize Query Rules for annomized data.
 - [x] Ensure Logs are being stored in a proper format.
 - [x] Ensure Logs are being sent to ElasticSearch and can be viewed in Kibana.
-- [ ] Configure Data at Rest Encryption.
-- [ ] Configure Data in Transit Encryption.
+- [x] Configure Data at Rest Encryption.
+- [x] Configure Data in Transit Encryption.
+- [ ] Verify Data at Rest Encryption and Data in Transit Encryption is working.
+```sql
+## Before Encryption
+root ➜ .../DATA/mariadb-master/data/employees $ strings titles.ibd | head -n10
+infimum
+supremum
+Senior Engineer
+7<Senior Engineer
+Senior Engineer
+infimum
+supremum
+Senior Engineer
+Staff
+Senior Engineer
+## After Encryption
+root ➜ .../DATA/mariadb-master/data/employees $ strings titles.ibd | head -n10
+O"w_
+D!srA
+3)f2
+Z5LX&
+p;oR
+Tk' 
+ZG2P;
+\Ums
+C,prL
+aRyGX
+```
+- [ ] Configure ProxySQL to use SSL for connections.
 - [ ] System Admin Sudo (Limits)
 
 
@@ -59,8 +87,14 @@ mysql -h127.0.0.1 -P3307 -uroot -p$MARIADB_ROOT_PASSWORD --prompt='MySQL Slave> 
 mysql -h127.0.0.1 -P6033 -udata_ops -paer6eethe7aiShe6uoqu4ieTeef6aig3 --prompt='PSSQL data_ops> '
 
 
-
+SELECT * FROM information_schema.INNODB_TABLESPACES_ENCRYPTION WHERE NAME LIKE 'db_encrypt%';
 
 # Resources
 - https://severalnines.com/blog/full-mariadb-encryption-rest-and-transit-maximum-data-protection-part-one/
 - https://severalnines.com/blog/full-mariadb-encryption-rest-and-transit-maximum-data-protection-part-two/
+
+
+
+Dependency
+- mariadb-client
+- binutils (in container mariadb - strings command)
