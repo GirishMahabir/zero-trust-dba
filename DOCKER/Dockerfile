@@ -24,6 +24,10 @@ RUN apt install -y \
     ssh \
     net-tools
 
+# Create the mysql user and group
+RUN groupadd -g 1001 mysql && \
+    useradd -u 1001 -g mysql -s /bin/bash mysql
+
 # Configure Container for Data at Rest Encryption
 COPY ./scripts/Data-At-Rest-Encryption.sh /tmp/Data-At-Rest-Encryption.sh
 COPY ./scripts/Data-In-Transit-Encryption.sh /tmp/Data-In-Transit-Encryption.sh
@@ -31,17 +35,21 @@ COPY ./scripts/Data-In-Transit-Encryption.sh /tmp/Data-In-Transit-Encryption.sh
 # Set Permissions for Data-At-Rest-Encryption.sh
 RUN chmod +x /tmp/Data-At-Rest-Encryption.sh /tmp/Data-In-Transit-Encryption.sh
 
+# Execute Data-At-Rest-Encryption.sh and Data-In-Transit-Encryption.sh.
 RUN bash /tmp/Data-At-Rest-Encryption.sh
 RUN bash /tmp/Data-In-Transit-Encryption.sh
 
-# Create Encryption CNF File
-COPY ./templates/encryption.cnf /etc/mysql/encryption.cnf
+# Make copy of my.cnf
+RUN cp /opt/bitnami/mariadb/conf/my.cnf /opt/bitnami/mariadb/conf/my.cnf.bak
+
+# Add CUSTOM my.cnf
+COPY ./templates/my.cnf /opt/bitnami/mariadb/conf/my.cnf
 
 # Create User & Group (dba & sysadmin)
-RUN groupadd -g 1000 dba && \
-    groupadd -g 1001 sysadmin && \
-    useradd -u 1000 -g dba -m -s /bin/bash dba && \
-    useradd -u 1001 -g sysadmin -m -s /bin/bash sysadmin
+RUN groupadd -g 2000 dba && \
+    groupadd -g 2001 sysadmin && \
+    useradd -u 2000 -g dba -m -s /bin/bash dba && \
+    useradd -u 2001 -g sysadmin -m -s /bin/bash sysadmin
 
 # Generate and set random password for root, dba and sysadmin users.
 RUN echo "root:$(openssl rand -base64 32)" | chpasswd && \
