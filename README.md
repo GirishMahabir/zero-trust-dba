@@ -68,7 +68,10 @@ ZG2P;
 C,prL
 aRyGX
 ```
+- [x] Check in between nodes SSL and Client.
 - [ ] Configure ProxySQL to use SSL for connections.
+    - [ ] ProxySQL to MySQL Backend
+    - [ ] Client to ProxySQL
 - [ ] System Admin Sudo (Limits)
 
 

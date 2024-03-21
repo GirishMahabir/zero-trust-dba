@@ -35,8 +35,8 @@ mysql_variables=
 
 mysql_servers =
 (
-    { address="mariadb-master", port=3306, hostgroup=10, max_connections=1000, max_replication_lag=5 },
-    { address="mariadb-slave", port=3306, hostgroup=20, max_connections=1000, max_replication_lag=5 },
+    { address="mariadb-master", port=3306, hostgroup=10, max_connections=1000, max_replication_lag=5, ssl=true },
+    { address="mariadb-slave", port=3306, hostgroup=20, max_connections=1000, max_replication_lag=5, ssl=true },
 )
 
 mysql_query_rules =
