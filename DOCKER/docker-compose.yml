@@ -209,7 +209,7 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - '../DATA/mariadb-master/data:/bitnami/mariadb'
+      - '../DATA/mariadb-master/:/bitnami/mariadb'
       - '../DATA/mariadb-master/logs:/opt/bitnami/mariadb/logs'
     environment:
       - MARIADB_SKIP_TEST_DB=yes
@@ -233,7 +233,7 @@ services:
       mariadb-master:
           condition: service_healthy
     volumes:
-      - '../DATA/mariadb-slave/data:/bitnami/mariadb'
+      - '../DATA/mariadb-slave/:/bitnami/mariadb'
       - '../DATA/mariadb-slave/logs:/opt/bitnami/mariadb/logs'
     ports:
       - '3307:3306'
@@ -263,7 +263,8 @@ services:
     volumes:
       - ../DATA/proxysql-data:/var/lib/proxysql
       - ../CONF/proxysql.cnf:/etc/proxysql.cnf
-      - ../SCRIPTS/prepareProxySQL.sql:/tmp/prepareProxySQL.sql 
+      - ../SCRIPTS/prepareProxySQL.sql:/tmp/prepareProxySQL.sql
+      
     ports:
       - '6032:6032'
       - '6033:6033'

@@ -5,6 +5,11 @@ UPDATE global_variables SET variable_value='2' WHERE variable_name='mysql-events
 
 -- select * from global_variables where variable_name like 'mysql-eventslog%' or variable_name like 'mysql-query_rules%';
 
+-- SSL Configuration (SELECT * FROM global_variables WHERE variable_name LIKE 'mysql-ssl%';)
+SET mysql-ssl_p2s_cert="/var/lib/proxysql/certs/client-cert.pem";
+SET mysql-ssl_p2s_key="/var/lib/proxysql/certs/client-key.pem";
+SET mysql-ssl_p2s_ca="/var/lib/proxysql/certs/ca-cert.pem";
+
 -- Anonymize first_name and last_name
 INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply)
 VALUES (1000, 1, '^SELECT (.*)first_name, (.*)last_name(.*) FROM employees', 'SELECT MD5(CONCAT(emp_no, ''_first'')) AS first_name, MD5(CONCAT(emp_no, ''_last'')) AS last_name \3 FROM employees', 1);

@@ -2,8 +2,10 @@
 
 source DOCKER/.env
 
-# git clone employee db in DATA Dir
+# Prepare Replication.
+mysql -u root -p$MARIADB_ROOT_PASSWORD -h127.0.0.1 -P3307 < SCRIPTS/prepareReplication.sql
 
+# Git clone employee db in DATA Dir
 if [ -d "DATA/EmployeesSampleDB" ]
 then
   echo "Directory DATA/EmployeesSampleDB exists."
@@ -19,6 +21,15 @@ cd DATA/EmployeesSampleDB/
 mysql -u root -p$MARIADB_ROOT_PASSWORD -h127.0.0.1 -P3306 < employees.sql
 cd ../../
 
+# Copy MariaDB Client Certificates to ProxySQL Container
+sudo mkdir -p DATA/proxysql-data/certs
+cd DOCKER/
+MARIADB_CERTS_DIR="/opt/bitnami/mariadb/conf/transit/"
+sudo docker compose cp mariadb-master:$MARIADB_CERTS_DIR/ca-cert.pem ../DATA/proxysql-data/certs/ca-cert.pem
+sudo docker compose cp mariadb-master:$MARIADB_CERTS_DIR/client-cert.pem ../DATA/proxysql-data/certs/client-cert.pem
+sudo docker compose cp mariadb-master:$MARIADB_CERTS_DIR/client-key.pem ../DATA/proxysql-data/certs/client-key.pem
+cd ../
+
 # Prepare ProxySQL.
 docker exec --env-file DOCKER/.env zero-trust-dba-project-proxysql-1  /bin/bash -c 'mysql -u admin -p$ProxySQL_ADMIN_PASSWORD -h 127.0.0.1 -P6032 </tmp/prepareProxySQL.sql'
 
@@ -28,3 +39,11 @@ docker exec --env-file DOCKER/.env zero-trust-dba-project-proxysql-1  /bin/bash 
 # Load Template on Elasticsearch
 curl -ksu elastic:$ELASTIC_PASSWORD -X PUT "https://localhost:9200/_index_template/proxysql-logs" -H 'Content-Type: application/json' -d @CONF/proxysql-log-template.json
 
+# Exit Message
+<<<<<<< HEAD
+echo "Preparation Completed"
+=======
+echo ""
+echo "MariaDB, ProxySQL and Elasticsearch are ready for use."
+echo ""
+>>>>>>> ad3f504 (Data-in-transit completed with pcap tests.)
