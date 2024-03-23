@@ -40,10 +40,6 @@ docker exec --env-file DOCKER/.env zero-trust-dba-project-proxysql-1  /bin/bash 
 curl -ksu elastic:$ELASTIC_PASSWORD -X PUT "https://localhost:9200/_index_template/proxysql-logs" -H 'Content-Type: application/json' -d @CONF/proxysql-log-template.json
 
 # Exit Message
-<<<<<<< HEAD
-echo "Preparation Completed"
-=======
 echo ""
 echo "MariaDB, ProxySQL and Elasticsearch are ready for use."
 echo ""
->>>>>>> ad3f504 (Data-in-transit completed with pcap tests.)
