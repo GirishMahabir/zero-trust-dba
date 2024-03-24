@@ -6,8 +6,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: mariadb-11.2
-  TAG: mdx-dba
+  IMAGE_NAME: mariadb
+  TAG: 11.2-mdx-dba
 
 jobs:
   build:
@@ -32,7 +32,7 @@ jobs:
       uses: docker/metadata-action@v5
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        tags: type=ref,event=branch,tag=${{ env.TAG }}
+        tags: type=ref,event=branch
       
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v5
