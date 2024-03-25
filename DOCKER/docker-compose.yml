@@ -205,7 +205,7 @@ services:
       - strict.perms=false
 
   mariadb-master:
-    image: mariadb:11.2-custom
+    image: ghcr.io/girishmahabir/zero-trust-dba/mariadb-11.2:master
     ports:
       - '3306:3306'
     volumes:
@@ -228,7 +228,7 @@ services:
       retries: 6
 
   mariadb-slave:
-    image: mariadb:11.2-custom
+    image: ghcr.io/girishmahabir/zero-trust-dba/mariadb-11.2:master
     depends_on:
       mariadb-master:
           condition: service_healthy

@@ -69,9 +69,9 @@ C,prL
 aRyGX
 ```
 - [x] Check in between nodes SSL and Client.
-- [ ] Configure ProxySQL to use SSL for connections.
-    - [ ] ProxySQL to MySQL Backend
-    - [ ] Client to ProxySQL
+- [x] Configure ProxySQL to use SSL for connections.
+    - [x] ProxySQL to MySQL Backend
+    - [x] Client to ProxySQL
 - [ ] System Admin Sudo (Limits)
 
 
@@ -101,3 +101,6 @@ SELECT * FROM information_schema.INNODB_TABLESPACES_ENCRYPTION WHERE NAME LIKE '
 Dependency
 - mariadb-client
 - binutils (in container mariadb - strings command)
+
+
+ip.dst == 172.20.0.6 && ip.addr != 172.20.0.5 && ip.addr != 172.20.0.3 && frame.len > 66
