@@ -28,7 +28,7 @@ clean:
 	sudo rm -rf $(DATA_DIR)/*
 
 build:
-	cd $(DOCKER_DIR) && docker build . -t mariadb:11.2-custom --no-cache
+	cd $(DOCKER_DIR) && docker build . -t ghcr.io/girishmahabir/zero-trust-dba/mariadb-11.2:master --no-cache
 
 prepare:
 	sudo chmod +x $(SCRIPTS_DIR)/prepare.sh

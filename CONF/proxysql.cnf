@@ -37,7 +37,6 @@ mysql_servers =
 (
     { address="mariadb-master", port=3306, hostgroup=10, max_connections=1000, max_replication_lag=5, use_ssl=1 },
     { address="mariadb-slave", port=3306, hostgroup=20, max_connections=1000, max_replication_lag=5, use_ssl=1 },
-    { address="mariadb-backup", port=3306, hostgroup=90, max_connections=1000, use_ssl=1 }
 )
 
 mysql_users =

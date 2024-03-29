@@ -21,10 +21,10 @@ GRANT REPLICATION CLIENT, SHOW VIEW, SHOW DATABASES, PROCESS ON *.* TO 'db_monit
 CREATE USER 'backup_operator'@'%' IDENTIFIED BY 'aeng7Ijoj9eeyie8OoThiojeitho8Jie' REQUIRE SSL;
 GRANT SELECT, LOCK TABLES ON *.* TO 'backup_operator'@'%';
 
--- System Administrator
+-- Database Administrator
 -- Manages high-level administrative tasks and user permissions.
-CREATE USER 'sys_admin'@'%' IDENTIFIED BY 'goong1eeQuooW0xeungooPheer9raacu' REQUIRE SSL;
-GRANT RELOAD, SUPER, CREATE USER, GRANT OPTION ON *.* TO 'sys_admin'@'%';
+CREATE USER 'dba'@'%' IDENTIFIED BY 'goong1eeQuooW0xeungooPheer9raacu' REQUIRE SSL;
+GRANT REPLICATION SLAVE ADMIN, SLAVE MONITOR, BINLOG MONITOR, RELOAD, SUPER, CREATE USER, GRANT OPTION ON *.* TO 'dba'@'%';
 
 -- Apply the changes
 FLUSH PRIVILEGES;

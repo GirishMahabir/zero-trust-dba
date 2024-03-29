@@ -254,7 +254,7 @@ services:
       interval: 15s
       timeout: 5s
       retries: 6
-  
+      
   proxysql:
     image: proxysql/proxysql:2.5.5-debian
     depends_on:

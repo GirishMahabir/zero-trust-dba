@@ -40,25 +40,9 @@ VALUES (1002, 1, '^SELECT (.*)hire_date(.*) FROM employees', 'SELECT DATE_ADD(''
 INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply, username)
 VALUES (1003, 1, '^SELECT (.*)salary(.*) FROM salaries', 'SELECT ROUND((RAND() * (150000-30000))+30000) AS salary \2 FROM salaries', 1, 'data_ops');
 
--- CREATE TABLE pending_queries (
---     query_id INT AUTO_INCREMENT PRIMARY KEY,
---     query_text TEXT NOT NULL,
---     submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---     submitted_by VARCHAR(255) NOT NULL,
---     status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
---     INDEX (status),
---     INDEX (submitted_at)
--- );
-
-
-INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply, username)
-INSERT INTO mysql_query_rules (rule_id, active, match_pattern, destination_hostgroup, apply, error_msg) VALUES
-(103, 1, '^CREATE USER', 90, 1, 'INSERT INTO pending_queries (query_text, submitted_by) VALUES (''CREATE USER ...'', ''dba'')'),
-(104, 1, '^GRANT', 90, 1, 'INSERT INTO pending_queries (query_text, submitted_by) VALUES (''GRANT ...'', ''dba'')');
-
 -- Block all other queries
 INSERT INTO mysql_query_rules (rule_id, active, match_pattern, destination_hostgroup, apply, error_msg) VALUES
-(9999, 1, '.*', 0, 1, 'Access denied');
+(99999, 1, '.*', 0, 1, 'Access denied');
 
 -- SELECT rule_id, active, match_pattern, replace_pattern, apply FROM mysql_query_rules;
 
