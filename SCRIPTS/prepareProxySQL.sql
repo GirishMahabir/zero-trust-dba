@@ -13,24 +13,52 @@ SET mysql-ssl_p2s_ca="/var/lib/proxysql/certs/ca-cert.pem";
 -- SSL Configuration Frontend (SELECT * FROM global_variables WHERE variable_name LIKE 'mysql-ssl%';)
 SET mysql-have_ssl=1; -- Certificates will be automatically generated.
 
+-- Create Rules For dba User
+INSERT INTO mysql_query_rules (rule_id, active, match_pattern, destination_hostgroup, apply, error_msg, username) VALUES
+(100, 1, '^SHOW MASTER STATUS', 10, 1, NULL, 'dba'),
+(101, 1, '^SHOW BINARY LOGS', 10, 1, NULL, 'dba'),
+(102, 1, '^SHOW PROCESSLIST', 10, 1, NULL, 'dba'),
+(200, 1, '^SHOW SLAVE STATUS', 20, 1, NULL, 'dba'),
+(201, 1, '^SHOW RELAYLOG EVENTS', 20, 1, NULL, 'dba'),
+(202, 1, '^START SLAVE', 20, 1, NULL, 'dba'),
+(203, 1, '^STOP SLAVE', 20, 1, NULL, 'dba'),
+(204, 1, '^CHANGE MASTER TO', 20, 1, NULL, 'dba');
+
 -- Anonymize first_name and last_name
-INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply)
-VALUES (1000, 1, '^SELECT (.*)first_name, (.*)last_name(.*) FROM employees', 'SELECT MD5(CONCAT(emp_no, ''_first'')) AS first_name, MD5(CONCAT(emp_no, ''_last'')) AS last_name \3 FROM employees', 1);
+INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply, username)
+VALUES (1000, 1, '^SELECT (.*)first_name, (.*)last_name(.*) FROM employees', 'SELECT MD5(CONCAT(emp_no, ''_first'')) AS first_name, MD5(CONCAT(emp_no, ''_last'')) AS last_name \3 FROM employees', 1, 'data_ops');
 
--- -- Anonymize birth_date
-INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply)
-VALUES (1001, 1, '^SELECT (.*)birth_date(.*) FROM employees', 'SELECT DATE_ADD(''1970-01-01'', INTERVAL FLOOR(0 + (RAND() * (365 * 50))) DAY) AS birth_date \2 FROM employees', 1);
+-- Anonymize birth_date
+INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply, username)
+VALUES (1001, 1, '^SELECT (.*)birth_date(.*) FROM employees', 'SELECT DATE_ADD(''1970-01-01'', INTERVAL FLOOR(0 + (RAND() * (365 * 50))) DAY) AS birth_date \2 FROM employees', 1, 'data_ops');
 
--- -- Anonymize hire_date
-INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply)
-VALUES (1002, 1, '^SELECT (.*)hire_date(.*) FROM employees', 'SELECT DATE_ADD(''1985-01-01'', INTERVAL FLOOR(0 + (RAND() * (365 * 35))) DAY) AS hire_date \2 FROM employees', 1);
+-- Anonymize hire_date
+INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply, username)
+VALUES (1002, 1, '^SELECT (.*)hire_date(.*) FROM employees', 'SELECT DATE_ADD(''1985-01-01'', INTERVAL FLOOR(0 + (RAND() * (365 * 35))) DAY) AS hire_date \2 FROM employees', 1, 'data_ops');
 
--- -- Anonymize salary
-INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply)
-VALUES (1003, 1, '^SELECT (.*)salary(.*) FROM salaries', 'SELECT ROUND((RAND() * (150000-30000))+30000) AS salary \2 FROM salaries', 1);
+-- Anonymize salary
+INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply, username)
+VALUES (1003, 1, '^SELECT (.*)salary(.*) FROM salaries', 'SELECT ROUND((RAND() * (150000-30000))+30000) AS salary \2 FROM salaries', 1, 'data_ops');
 
--- Update rule_id for last block all rule.
-UPDATE mysql_query_rules SET rule_id=1100 WHERE rule_id=900;
+-- CREATE TABLE pending_queries (
+--     query_id INT AUTO_INCREMENT PRIMARY KEY,
+--     query_text TEXT NOT NULL,
+--     submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     submitted_by VARCHAR(255) NOT NULL,
+--     status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+--     INDEX (status),
+--     INDEX (submitted_at)
+-- );
+
+
+INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply, username)
+INSERT INTO mysql_query_rules (rule_id, active, match_pattern, destination_hostgroup, apply, error_msg) VALUES
+(103, 1, '^CREATE USER', 90, 1, 'INSERT INTO pending_queries (query_text, submitted_by) VALUES (''CREATE USER ...'', ''dba'')'),
+(104, 1, '^GRANT', 90, 1, 'INSERT INTO pending_queries (query_text, submitted_by) VALUES (''GRANT ...'', ''dba'')');
+
+-- Block all other queries
+INSERT INTO mysql_query_rules (rule_id, active, match_pattern, destination_hostgroup, apply, error_msg) VALUES
+(9999, 1, '.*', 0, 1, 'Access denied');
 
 -- SELECT rule_id, active, match_pattern, replace_pattern, apply FROM mysql_query_rules;
 
