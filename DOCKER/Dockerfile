@@ -22,7 +22,7 @@ RUN apt install -y \
     sysstat \
     auditd \
     ssh \
-    net-tools
+    net-tools 
 
 # Create the mysql user and group
 RUN groupadd -g 1001 mysql && \
@@ -73,3 +73,21 @@ RUN echo "* * * * * root /ssh-service.sh" >> /etc/crontab
 
 # Copy Sudores File
 COPY ./templates/sudoers.conf /etc/sudoers
+
+# Create GPG Key
+RUN gpg --batch --generate-key <<EOF
+Key-Type: RSA
+Key-Length: 4096
+Subkey-Type: RSA
+Subkey-Length: 4096
+Name-Real: DBA
+Name-Comment: Backup Key
+Name-Email: dba@mdx-org.com
+Expire-Date: 0
+Passphrase: secure-passphrase
+%no-protection
+EOF
+
+RUN mkdir -p /opt/utils
+
+COPY ./scripts/utility/* /opt/utils/
