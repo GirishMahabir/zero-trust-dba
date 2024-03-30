@@ -76,8 +76,9 @@ COPY ./templates/sudoers.conf /etc/sudoers
 
 # Create GPG Key
 COPY ./templates/gpg-key.sh /tmp/gpg-key.sh
+
 RUN chmod +x /tmp/gpg-key.sh && \
-    /tmp/gpg-key.sh && \
+    bash -x /tmp/gpg-key.sh && \
     rm /tmp/gpg-key.sh
 
 RUN mkdir -p /opt/utils
