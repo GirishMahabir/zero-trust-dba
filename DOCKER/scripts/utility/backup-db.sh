@@ -28,8 +28,10 @@ DATABASE_NAME="$1"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 BACKUP_FILE="${BACKUP_DIR}/${DATABASE_NAME}_${TIMESTAMP}.sql.gz.gpg"
 
+echo "Backing up database: ${DATABASE_NAME} with GPG recipient: ${GPG_RECIPIENT}"
+
 # Perform the backup, gzip compress, and encrypt
-mysqldump --socket=/var/run/mysqld/mysqld.sock -u root "${DATABASE_NAME}" | gzip | gpg --encrypt --recipient "${GPG_RECIPIENT}" --output "${BACKUP_FILE}"
+mysqldump --socket=/opt/bitnami/mariadb/tmp/mysql.sock -u root "${DATABASE_NAME}" | gzip | gpg --encrypt --recipient "${GPG_RECIPIENT}" --output "${BACKUP_FILE}"
 
 # Verify success
 if [ $? -eq 0 ]; then
