@@ -31,6 +31,8 @@ mysql_variables=
 	commands_stats=true
 	sessions_sort=true
 	connect_retries_on_failure=10
+	mysql-auditlog_enabled=true
+	mysql-auditlog_filesize=104857600
 }
 
 mysql_servers =

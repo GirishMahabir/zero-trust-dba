@@ -2,6 +2,7 @@ UPDATE global_variables SET variable_value='/var/lib/proxysql/queries.log' WHERE
 UPDATE global_variables SET variable_value='10485760' WHERE variable_name='mysql-eventslog_filesize'; -- 10MB, adjust as needed
 UPDATE global_variables SET variable_value='1' WHERE variable_name='mysql-eventslog_default_log'; -- 1=enabled
 UPDATE global_variables SET variable_value='2' WHERE variable_name='mysql-eventslog_format'; -- JSON
+SET mysql-auditlog_filename="/var/lib/proxysql/proxysql-audit.log";
 
 -- select * from global_variables where variable_name like 'mysql-eventslog%' or variable_name like 'mysql-query_rules%';
 

@@ -1,3 +1,6 @@
+-- Create User Root For unix_socket
+CREATE USER 'root'@'localhost' IDENTIFIED WITH unix_socket;
+
 -- Replication User SSL
 ALTER USER 'repl_user'@'%' REQUIRE SSL;
 
