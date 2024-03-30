@@ -75,19 +75,13 @@ RUN echo "* * * * * root /ssh-service.sh" >> /etc/crontab
 COPY ./templates/sudoers.conf /etc/sudoers
 
 # Create GPG Key
-RUN gpg --batch --generate-key <<EOF
-Key-Type: RSA
-Key-Length: 4096
-Subkey-Type: RSA
-Subkey-Length: 4096
-Name-Real: DBA
-Name-Comment: Backup Key
-Name-Email: dba@mdx-org.com
-Expire-Date: 0
-Passphrase: secure-passphrase
-%no-protection
-EOF
+COPY ./templates/gpg-key.sh /tmp/gpg-key.sh
+RUN chmod +x /tmp/gpg-key.sh && \
+    /tmp/gpg-key.sh && \
+    rm /tmp/gpg-key.sh
 
 RUN mkdir -p /opt/utils
 
 COPY ./scripts/utility/* /opt/utils/
+
+RUN chmod +x /opt/utils/*
