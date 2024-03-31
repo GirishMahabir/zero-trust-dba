@@ -3,7 +3,7 @@
 source DOCKER/.env
 
 # Prepare Replication.
-mysql -u root -p$MARIADB_ROOT_PASSWORD -h127.0.0.1 -P3307 < SCRIPTS/prepareReplication.sql
+mariadb -u root -p$MARIADB_ROOT_PASSWORD -h127.0.0.1 -P3307 < SCRIPTS/prepareReplication.sql
 
 # Git clone employee db in DATA Dir
 if [ -d "DATA/EmployeesSampleDB" ]
@@ -16,9 +16,9 @@ else
 fi
 
 # # Prepare DB.
-mysql -u root -p$MARIADB_ROOT_PASSWORD -h127.0.0.1 -P3306 < SCRIPTS/prepareDB.sql
+mariadb -u root -p$MARIADB_ROOT_PASSWORD -h127.0.0.1 -P3306 < SCRIPTS/prepareDB.sql
 cd DATA/EmployeesSampleDB/
-mysql -u root -p$MARIADB_ROOT_PASSWORD -h127.0.0.1 -P3306 < employees.sql
+mariadb -u root -p$MARIADB_ROOT_PASSWORD -h127.0.0.1 -P3306 < employees.sql
 cd ../../
 
 # Copy MariaDB Client Certificates to ProxySQL Container

@@ -1,4 +1,4 @@
-# zero-trust-dba
+ # zero-trust-dba
 Zero-Trust Database Administration with the aim to protect the administrator as well as the data.
 
 # Manual commands - to be automated
@@ -41,56 +41,40 @@ SAVE MYSQL VARIABLES TO DISK;
 - [x] Ensure Logs are being sent to ElasticSearch and can be viewed in Kibana.
 - [x] Configure Data at Rest Encryption.
 - [x] Configure Data in Transit Encryption.
-- [ ] Verify Data at Rest Encryption and Data in Transit Encryption is working.
-```sql
-## Before Encryption
-root ➜ .../DATA/mariadb-master/data/employees $ strings titles.ibd | head -n10
-infimum
-supremum
-Senior Engineer
-7<Senior Engineer
-Senior Engineer
-infimum
-supremum
-Senior Engineer
-Staff
-Senior Engineer
-## After Encryption
-root ➜ .../DATA/mariadb-master/data/employees $ strings titles.ibd | head -n10
-O"w_
-D!srA
-3)f2
-Z5LX&
-p;oR
-Tk' 
-ZG2P;
-\Ums
-C,prL
-aRyGX
-```
+- [x] Verify Data at Rest Encryption and Data in Transit Encryption is working.
 - [x] Check in between nodes SSL and Client.
 - [x] Configure ProxySQL to use SSL for connections.
     - [x] ProxySQL to MySQL Backend
     - [x] Client to ProxySQL
-- [ ] System Admin Sudo (Limits)
 
+- [x] Backup and Restore
+    - [x] GPG Key Management
+    - [x] Backup Encryption Script (Permissions)
 
+- [x] System Admin Sudo (Limits)
+- [x] Configure Audit Log for MariaDB
+- [x] Configure Audit Log for ProxySQL
+- [ ] Push all logs to ElasticSearch
+- [ ] Configure Kibana Dashboard
+- [ ] Configure Alerting (Python Script)
 
 # Access
 source DOCKER/.env
-
 ## ProxySQL Admin
 mysql -h127.0.0.1 -P6032 -uradmin -pgo0Daeghai5Xai9te1faenaoPiedohsh --prompt='PSSQL Admin> '
-
 ## MySQL Admin
 mysql -h127.0.0.1 -P3306 -uroot -p$MARIADB_ROOT_PASSWORD --prompt='MySQL Master> '
 mysql -h127.0.0.1 -P3307 -uroot -p$MARIADB_ROOT_PASSWORD --prompt='MySQL Slave> '
-
-## MySQL data_ops User
+## PSSQL User
 mysql -h127.0.0.1 -P6033 -udata_ops -paer6eethe7aiShe6uoqu4ieTeef6aig3 --prompt='PSSQL data_ops> '
+mysql -h127.0.0.1 -P6033 -uadmin -pgoong1eeQuooW0xeungooPheer9raacu --prompt='PSSQL admin> '
 
 
-SELECT * FROM information_schema.INNODB_TABLESPACES_ENCRYPTION WHERE NAME LIKE 'db_encrypt%';
+# Backup Database
+mysqldump -h127.0.0.1 -P3306 -udata_ops -paer6eethe7aiShe6uoqu4ieTeef6aig3 employees > employees.sql
+mysqldump -h127.0.0.1 -P6033 -ubackup_operator -paeng7Ijoj9eeyie8OoThiojeitho8Jie employees > employees.sql
+mysqldump -h127.0.0.1 -P6033 -udba -pgoong1eeQuooW0xeungooPheer9raacu employees > employees.sql
+
 
 # Resources
 - https://severalnines.com/blog/full-mariadb-encryption-rest-and-transit-maximum-data-protection-part-one/
@@ -102,5 +86,4 @@ Dependency
 - mariadb-client
 - binutils (in container mariadb - strings command)
 
-
-ip.dst == 172.20.0.6 && ip.addr != 172.20.0.5 && ip.addr != 172.20.0.3 && frame.len > 66
+  

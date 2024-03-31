@@ -12,6 +12,7 @@ SCRIPTS_DIR=SCRIPTS
 .PHONY: start stop ps stats clean build prepare
 
 start:
+	cd $(DOCKER_DIR) && docker-compose pull
 	cd $(DOCKER_DIR) && docker-compose up -d
 
 stop:
@@ -25,7 +26,8 @@ stats:
 
 clean:
 	cd $(DOCKER_DIR) && docker-compose down --remove-orphans -v
-	sudo rm -rf $(DATA_DIR)/*
+	sudo rm -rf $(DATA_DIR)/mariadb*
+	sudo rm -rf $(DATA_DIR)/proxysql*
 
 build:
 	cd $(DOCKER_DIR) && docker build . -t ghcr.io/girishmahabir/zero-trust-dba/mariadb-11.2:master --no-cache
