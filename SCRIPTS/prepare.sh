@@ -2,6 +2,11 @@
 
 source DOCKER/.env
 
+# Prepare Filebeat User Permission (To have access to mysql logs.)
+docker container exec -uroot -it zero-trust-dba-project-filebeat01-1 groupadd -g 1001 mysql
+docker container exec -uroot -it zero-trust-dba-project-filebeat01-1 usermod -a -G mysql filebeat
+docker container restart zero-trust-dba-project-filebeat01-1
+
 # Prepare Replication.
 mariadb -u root -p$MARIADB_ROOT_PASSWORD -h127.0.0.1 -P3307 < SCRIPTS/prepareReplication.sql
 
@@ -38,6 +43,11 @@ docker exec --env-file DOCKER/.env zero-trust-dba-project-proxysql-1  /bin/bash 
 
 # Load Template on Elasticsearch
 curl -ksu elastic:$ELASTIC_PASSWORD -X PUT "https://localhost:9200/_index_template/proxysql-logs" -H 'Content-Type: application/json' -d @CONF/proxysql-log-template.json
+echo ""
+
+# Echo Preparing Python Script:
+echo "Preparing Python Script..."
+docker cp docker cp zero-trust-dba-project-es01-1:/usr/share/elasticsearch/config/certs/ca/ca.crt ../ALERT/
 
 # Exit Message
 echo ""

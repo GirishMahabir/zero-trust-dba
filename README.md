@@ -54,26 +54,30 @@ SAVE MYSQL VARIABLES TO DISK;
 - [x] System Admin Sudo (Limits)
 - [x] Configure Audit Log for MariaDB
 - [x] Configure Audit Log for ProxySQL
-- [ ] Push all logs to ElasticSearch
-- [ ] Configure Kibana Dashboard
-- [ ] Configure Alerting (Python Script)
+- [x] Push all logs to ElasticSearch
+- [x] Configure Alerting (Python Script)
 
 # Access
 source DOCKER/.env
 ## ProxySQL Admin
 mysql -h127.0.0.1 -P6032 -uradmin -pgo0Daeghai5Xai9te1faenaoPiedohsh --prompt='PSSQL Admin> '
+
 ## MySQL Admin
 mysql -h127.0.0.1 -P3306 -uroot -p$MARIADB_ROOT_PASSWORD --prompt='MySQL Master> '
 mysql -h127.0.0.1 -P3307 -uroot -p$MARIADB_ROOT_PASSWORD --prompt='MySQL Slave> '
+
 ## PSSQL User
 mysql -h127.0.0.1 -P6033 -udata_ops -paer6eethe7aiShe6uoqu4ieTeef6aig3 --prompt='PSSQL data_ops> '
 mysql -h127.0.0.1 -P6033 -uadmin -pgoong1eeQuooW0xeungooPheer9raacu --prompt='PSSQL admin> '
-
 
 # Backup Database
 mysqldump -h127.0.0.1 -P3306 -udata_ops -paer6eethe7aiShe6uoqu4ieTeef6aig3 employees > employees.sql
 mysqldump -h127.0.0.1 -P6033 -ubackup_operator -paeng7Ijoj9eeyie8OoThiojeitho8Jie employees > employees.sql
 mysqldump -h127.0.0.1 -P6033 -udba -pgoong1eeQuooW0xeungooPheer9raacu employees > employees.sql
+
+## Success:
+- Simulate SSH Connection: `docker exec -udba -it zero-trust-dba-project-mariadb-slave-1 bash`
+- Launch Script to backup: `sudo /opt/utils/backup-db.sh employees`
 
 
 # Resources
@@ -81,9 +85,6 @@ mysqldump -h127.0.0.1 -P6033 -udba -pgoong1eeQuooW0xeungooPheer9raacu employees 
 - https://severalnines.com/blog/full-mariadb-encryption-rest-and-transit-maximum-data-protection-part-two/
 
 
-
 Dependency
 - mariadb-client
 - binutils (in container mariadb - strings command)
-
-  

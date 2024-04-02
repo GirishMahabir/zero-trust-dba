@@ -2,9 +2,15 @@ filebeat.inputs:
   - type: log
     paths:
       - ingest_data/proxysql-data/*.log*
+    tags: ["proxysql"]
     json:
       keys_under_root: true
       add_error_key: true
+
+filebeat.config.modules.path: /usr/share/filebeat/modules.d/*.yml
+filebeat.modules:
+  - module: mysql
+  - module: mysqlenterprise
 
 setup.kibana:
   host: ${KIBANA_HOSTS}
@@ -19,6 +25,8 @@ setup.template:
     index.number_of_replicas: 0
 
 setup.ilm.enabled: false
+monitoring.enabled: false
+logging.level: debug
 
 output.elasticsearch:
   hosts: ${ELASTIC_HOSTS}
@@ -26,7 +34,13 @@ output.elasticsearch:
   password: ${ELASTIC_PASSWORD}
   ssl.enabled: true
   ssl.certificate_authorities: "/usr/share/filebeat/certs/ca/ca.crt"
-  index: "proxysql-logs-%{+yyyy.MM.dd}"
-
-monitoring.enabled: false
-logging.level: debug
+  indices:
+    - index: "proxysql-logs-%{+yyyy.MM.dd}"
+      when.contains:
+        tags: "proxysql"
+    - index: "mysql-logs-%{+yyyy.MM.dd}"
+      when.equals:
+        event.module: "mysql"
+    - index: "mysql-logs-audit-%{+yyyy.MM.dd}"
+      when.equals:
+        event.module: "mysqlenterprise"
