@@ -241,7 +241,6 @@ services:
       - ../DATA/proxysql-data:/var/lib/proxysql
       - ../CONF/proxysql.cnf:/etc/proxysql.cnf
       - ../SCRIPTS/prepareProxySQL.sql:/tmp/prepareProxySQL.sql
-      
     ports:
       - '6032:6032'
       - '6033:6033'

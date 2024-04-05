@@ -47,7 +47,7 @@ echo ""
 
 # Echo Preparing Python Script:
 echo "Preparing Python Script..."
-docker cp docker cp zero-trust-dba-project-es01-1:/usr/share/elasticsearch/config/certs/ca/ca.crt ../ALERT/
+docker cp zero-trust-dba-project-es01-1:/usr/share/elasticsearch/config/certs/ca/ca.crt ../ALERT/
 
 # Exit Message
 echo ""

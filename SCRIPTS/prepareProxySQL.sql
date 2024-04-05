@@ -19,11 +19,31 @@ INSERT INTO mysql_query_rules (rule_id, active, match_pattern, destination_hostg
 (100, 1, '^SHOW MASTER STATUS', 10, 1, NULL, 'dba'),
 (101, 1, '^SHOW BINARY LOGS', 10, 1, NULL, 'dba'),
 (102, 1, '^SHOW PROCESSLIST', 10, 1, NULL, 'dba'),
-(200, 1, '^SHOW SLAVE STATUS', 20, 1, NULL, 'dba'),
+(103, 1, '^SHOW FULL PROCESSLIST', 10, 1, NULL, 'dba'),
+(104, 1, '^SHOW STATUS', 10, 1, NULL, 'dba'),
+(105, 1, '^SHOW VARIABLES', 10, 1, NULL, 'dba'),
+(106, 1, '^SHOW TABLE STATUS', 10, 1, NULL, 'dba'),
+(107, 1, '^SHOW TABLES', 10, 1, NULL, 'dba'),
+(108, 1, '^SHOW CREATE TABLE', 10, 1, NULL, 'dba'),
+(109, 1, '^SHOW DATABASES', 10, 1, NULL, 'dba'),
+(110, 1, '^SHOW GRANTS', 10, 1, NULL, 'dba'),
+(111, 1, '^SHOW PRIVILEGES', 10, 1, NULL, 'dba'),
+(112, 1, '^SHOW SLAVE HOSTS', 10, 1, NULL, 'dba'),
+(113, 1, '^SHOW SLAVE STATUS', 20, 1, NULL, 'dba'),
+(114, 1, '^SHOW RELAYLOG EVENTS', 10, 1, NULL, 'dba'),
+(115, 1, '^EXPLAIN', 10, 1, NULL, 'dba'),
 (201, 1, '^SHOW RELAYLOG EVENTS', 20, 1, NULL, 'dba'),
 (202, 1, '^START SLAVE', 20, 1, NULL, 'dba'),
 (203, 1, '^STOP SLAVE', 20, 1, NULL, 'dba'),
-(204, 1, '^CHANGE MASTER TO', 20, 1, NULL, 'dba');
+(204, 1, '^CHANGE MASTER TO', 20, 1, NULL, 'dba'),
+(205, 1, '^RESET SLAVE', 20, 1, NULL, 'dba'),
+(206, 1, '^RESET MASTER', 20, 1, NULL, 'dba'),
+(207, 1, '^PURGE BINARY LOGS', 20, 1, NULL, 'dba'),
+(208, 1, '^RESET QUERY CACHE', 20, 1, NULL, 'dba'),
+(209, 1, '^ANALYZE TABLE', 20, 1, NULL, 'dba'),
+(210, 1, '^OPTIMIZE TABLE', 20, 1, NULL, 'dba'),
+(211, 1, '^SHOW GLOBAL STATUS LIKE', 20, 1, NULL, 'dba'),
+(212, 1, '^SHOW GLOBAL VARIABLES LIKE', 20, 1, NULL, 'dba');
 
 -- Anonymize first_name and last_name
 INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply, username)
