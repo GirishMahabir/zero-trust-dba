@@ -123,7 +123,7 @@ def main():
     context = create_default_context(
         cafile=os.path.join(script_path, "ca.crt"))
     es = Elasticsearch(
-        ['https://localhost:9200'],
+        ['https://es01:9200'],
         basic_auth=('elastic', 'vu4foh3fo8Iquai1saepee5shi5aroh7'),
         ssl_context=context,
     )
@@ -151,7 +151,7 @@ def main():
 
             # Send the email.
             send_email(html_email, 'ALERT: DUMP DETECTED', 'ALERT: DUMP DETCECTED',
-                       '127.0.0.1', 1025, '', '', 'admin@localhost')
+                       'mailhog', 1025, '', '', 'admin@localhost')
 
         time.sleep(60)
 
