@@ -6,10 +6,9 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: mariadb-11.2
 
 jobs:
-  build:
+  build-mariadb:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -30,13 +29,45 @@ jobs:
       id: metadata
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}
+        images: ${{ env.REGISTRY }}/${{ github.repository }}/mariadb-11.2
       
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v5
       with:
         context: ./DOCKER
         file: ./DOCKER/Dockerfile
+        push: true
+        tags: ${{ steps.metadata.outputs.tags }}
+        labels: ${{ steps.metadata.outputs.labels }}
+  
+  build-alert-demo:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+    
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GHCR_TOKEN }}
+      
+    - name: Extract metadata (tags and labels) from Dockerfile
+      id: metadata
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ github.repository }}/alert-demo
+      
+    - name: Build and Push Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./ALERT-APP-DEMO
+        file: ./ALERT-APP-DEMO/Dockerfile
         push: true
         tags: ${{ steps.metadata.outputs.tags }}
         labels: ${{ steps.metadata.outputs.labels }}
