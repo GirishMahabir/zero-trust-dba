@@ -4,4 +4,8 @@ ADD main.py .
 
 RUN pip install elasticsearch
 
-CMD [ "python3", "./main.py" ]
+# Set default directory
+WORKDIR /
+
+# Run the application
+CMD [ "python3", "main.py" ]

@@ -7,6 +7,7 @@ from email.mime.text import MIMEText
 import smtplib
 import time
 import os
+import ssl
 
 
 def get_documents(es, index_name, size=25, sort='desc'):
@@ -122,6 +123,10 @@ def main():
     script_path = os.path.dirname(os.path.abspath(__file__))
     context = create_default_context(
         cafile=os.path.join(script_path, "/certs/ca/ca.crt"))
+    
+    context.check_hostname = False
+    context.verify_mode = ssl.CERT_NONE
+    
     es = Elasticsearch(
         ['https://es01:9200'],
         basic_auth=('elastic', 'vu4foh3fo8Iquai1saepee5shi5aroh7'),
@@ -137,7 +142,12 @@ def main():
         filtered_hits = filter_fields(res, fields)
         search = search_in_field(filtered_hits, 'message',
                                  'SQL_NO_CACHE', 'mysql-audit')
-        search = search[0]
+        
+        if len(search) > 0:
+            search = search[0]
+        else:
+            time.sleep(60)
+            continue
 
         query_id = get_unique_query_id(search['message'])
 

@@ -7,6 +7,7 @@ DOCKER_COMPOSE_FILE=DOCKER/docker-compose.yml
 DATA_DIR=DATA
 CONF_DIR=CONF
 SCRIPTS_DIR=SCRIPTS
+ALERTS_DIR=ALERT-APP-DEMO
 
 # Docker operations
 .PHONY: start stop ps stats clean build prepare
@@ -28,6 +29,7 @@ clean:
 	cd $(DOCKER_DIR) && docker-compose down --remove-orphans -v
 	sudo rm -rf $(DATA_DIR)/mariadb*
 	sudo rm -rf $(DATA_DIR)/proxysql*
+	sudo rm $(ALERTS_DIR)/ca.crt
 
 build:
 	cd $(DOCKER_DIR) && docker build . -t ghcr.io/girishmahabir/zero-trust-dba/mariadb-11.2:master --no-cache

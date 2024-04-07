@@ -258,3 +258,4 @@ services:
       - mailhog
     volumes:
       - certs:/certs
+    restart: unless-stopped
