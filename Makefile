@@ -29,7 +29,6 @@ clean:
 	cd $(DOCKER_DIR) && docker-compose down --remove-orphans -v
 	sudo rm -rf $(DATA_DIR)/mariadb*
 	sudo rm -rf $(DATA_DIR)/proxysql*
-	sudo rm $(ALERTS_DIR)/ca.crt
 
 build:
 	cd $(DOCKER_DIR) && docker build . -t ghcr.io/girishmahabir/zero-trust-dba/mariadb-11.2:master --no-cache

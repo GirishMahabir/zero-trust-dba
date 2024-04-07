@@ -47,7 +47,7 @@ INSERT INTO mysql_query_rules (rule_id, active, match_pattern, destination_hostg
 
 -- Anonymize first_name and last_name
 INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply, username)
-VALUES (1000, 1, '^SELECT (.*)first_name, (.*)last_name(.*) FROM employees', 'SELECT MD5(CONCAT(emp_no, ''_first'')) AS first_name, MD5(CONCAT(emp_no, ''_last'')) AS last_name \3 FROM employees', 1, 'data_ops');
+VALUES (1000, 1, '^SELECT (.*)first_name, (.*)last_name(.*) FROM employees', 'SELECT FLOOR(RAND() * 1000000) AS first_name, FLOOR(RAND() * 1000000) AS last_name \3 FROM employees', 1, 'data_ops');
 
 -- Anonymize birth_date
 INSERT INTO mysql_query_rules (rule_id, active, match_pattern, replace_pattern, apply, username)
