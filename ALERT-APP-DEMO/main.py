@@ -121,7 +121,7 @@ def get_unique_query_id(search_result):
 def main():
     script_path = os.path.dirname(os.path.abspath(__file__))
     context = create_default_context(
-        cafile=os.path.join(script_path, "ca.crt"))
+        cafile=os.path.join(script_path, "/certs/ca/ca.crt"))
     es = Elasticsearch(
         ['https://es01:9200'],
         basic_auth=('elastic', 'vu4foh3fo8Iquai1saepee5shi5aroh7'),

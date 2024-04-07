@@ -244,9 +244,17 @@ services:
     ports:
       - '6032:6032'
       - '6033:6033'
-  
+
   mailhog:
     image: mailhog/mailhog
     ports:
       - "1025:1025"
       - "8025:8025"
+
+  alert-demo:
+    image: ghcr.io/girishmahabir/zero-trust-dba/alert-demo:master
+    depends_on:
+      - es01
+      - mailhog
+    volumes:
+      - certs:/certs
