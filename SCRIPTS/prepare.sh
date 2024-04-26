@@ -2,15 +2,6 @@
 
 source DOCKER/.env
 
-# Check if DATA directory exists.
-if [ -d "DATA" ]
-then
-  echo "Directory DATA exists."
-else
-    echo "Directory DATA does not exist."
-    mkdir -p DATA
-fi
-
 # Prepare Filebeat User Permission (To have access to mysql logs.)
 docker container exec -uroot -it zero-trust-dba-project-filebeat01-1 groupadd -g 1001 mysql
 docker container exec -uroot -it zero-trust-dba-project-filebeat01-1 usermod -a -G mysql filebeat

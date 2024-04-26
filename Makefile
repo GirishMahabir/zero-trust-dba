@@ -34,5 +34,6 @@ build:
 	cd $(DOCKER_DIR) && docker build . -t ghcr.io/girishmahabir/zero-trust-dba/mariadb-11.2:master --no-cache
 
 prepare:
+	mkdir $(DATA_DIR)
 	sudo chmod +x $(SCRIPTS_DIR)/prepare.sh
 	$(SCRIPTS_DIR)/prepare.sh
