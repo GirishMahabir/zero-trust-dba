@@ -42,7 +42,14 @@ Follow these steps to set up your ZTDA environment.
    ```
    make start
    ```
-
+4. Prepare the database and ProxySQL:
+   ```
+   make prepare
+   ```
+5. Verify that the services are running:
+   ```
+   make ps
+   ```
 ### Configuration
 Configure each service following the detailed instructions in the `CONF/` directory, adjusting settings in `docker-compose.yml` for Docker configurations, and in individual `.cnf` and `.yml` files for service-specific settings.
 
