@@ -13,6 +13,7 @@ ALERTS_DIR=ALERT-APP-DEMO
 .PHONY: start stop ps stats clean build prepare
 
 start:
+	mkdir -p $(DATA_DIR)
 	cd $(DOCKER_DIR) && docker-compose pull
 	cd $(DOCKER_DIR) && docker-compose up -d
 
@@ -34,6 +35,6 @@ build:
 	cd $(DOCKER_DIR) && docker build . -t ghcr.io/girishmahabir/zero-trust-dba/mariadb-11.2:master --no-cache
 
 prepare:
-	mkdir $(DATA_DIR)
+	mkdir -p $(DATA_DIR)
 	sudo chmod +x $(SCRIPTS_DIR)/prepare.sh
 	$(SCRIPTS_DIR)/prepare.sh
