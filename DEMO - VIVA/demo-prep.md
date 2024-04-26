@@ -87,9 +87,4 @@
 6. **Closing Remarks (30 seconds)**
    - Conclude by emphasizing the robustness of your Zero Trust setup against unauthorized access, data breaches, and SQL injections. Mention that these features ensure compliance with the highest security standards and pave the way for scalable, secure database administration.
 
-
-
-
-
 # Terminal Splits
-
